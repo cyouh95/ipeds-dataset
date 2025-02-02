@@ -1,0 +1,330 @@
+##
+## This is as list of all IPEDS files as given in the
+## complete data files portal. If you want to add files
+## that I've missed, be sure they match the name of the
+## link in the Data File column of the drop down table.
+##
+## You can prevent the script from downloading
+## specific files by either commenting out the name with
+## a hash symbol (#) or erasing it all together.
+##
+## Keep in mind that if you've already downloaded some
+## of the files before, the download script will not
+## download them again unless you change the -overwrite-
+## option to TRUE.
+##
+
+## -------------------------------
+## LAST UPDATED: 20 December 2024
+## -------------------------------
+
+# NB: Those files marked out are not currently available, but likely
+# to be available in the future.
+
+## ---------------------------
+## 2021
+## ---------------------------
+
+HD2021
+IC2021_AY
+EFIA2021
+ADM2021
+EF2021A
+EF2021C
+EF2021D
+EAP2021
+F2021_F1A
+SFA2021
+GR2021
+GR2021_PELL_SSL
+GR200_21
+
+## ---------------------------
+## 2020
+## ---------------------------
+
+HD2020
+IC2020_AY
+EFIA2020
+ADM2020
+EF2020A
+EF2020C
+EF2020D
+EAP2020
+F1920_F1A
+SFA1920
+GR2020
+GR2020_PELL_SSL
+GR200_20
+
+## ---------------------------
+## 2019
+## ---------------------------
+
+HD2019
+IC2019_AY
+EFIA2019
+ADM2019
+EF2019A
+EF2019C
+EF2019D
+EAP2019
+F1819_F1A
+SFA1819
+GR2019
+GR2019_PELL_SSL
+GR200_19
+
+## ---------------------------
+## 2018
+## ---------------------------
+
+HD2018
+IC2018_AY
+EFIA2018
+ADM2018
+EF2018A
+EF2018C
+EF2018D
+EAP2018
+F1718_F1A
+SFA1718
+GR2018
+GR2018_PELL_SSL
+GR200_18
+
+## ---------------------------
+## 2017
+## ---------------------------
+
+HD2017
+IC2017_AY
+EFIA2017
+ADM2017
+EF2017A
+EF2017C
+EF2017D
+EAP2017
+F1617_F1A
+SFA1617
+GR2017
+GR2017_PELL_SSL
+GR200_17
+
+## ---------------------------
+## 2016
+## ---------------------------
+
+HD2016
+IC2016_AY
+EFIA2016
+ADM2016
+EF2016A
+EF2016C
+EF2016D
+EAP2016
+F1516_F1A
+SFA1516
+GR2016
+GR2016_PELL_SSL
+GR200_16
+
+## ---------------------------
+## 2015
+## ---------------------------
+
+HD2015
+IC2015_AY
+EFIA2015
+ADM2015
+EF2015A
+EF2015C
+EF2015D
+EAP2015
+F1415_F1A
+SFA1415
+GR2015
+GR200_15
+
+## ---------------------------
+## 2014
+## ---------------------------
+
+HD2014
+IC2014_AY
+EFIA2014
+ADM2014
+EF2014A
+EF2014C
+EF2014D
+EAP2014
+F1314_F1A
+SFA1314
+GR2014
+GR200_14
+
+## ---------------------------
+## 2013
+## ---------------------------
+
+HD2013
+IC2013_AY
+EFIA2013
+IC2013
+EF2013A
+EF2013C
+EF2013D
+EAP2013
+F1213_F1A
+SFA1213
+GR2013
+GR200_13
+
+## ---------------------------
+## 2012
+## ---------------------------
+
+HD2012
+IC2012_AY
+EFIA2012
+IC2012
+EF2012A
+EF2012C
+EF2012D
+EAP2012
+F1112_F1A
+SFA1112
+GR2012
+GR200_12
+
+## ---------------------------
+## 2011
+## ---------------------------
+
+HD2011
+IC2011_AY
+EFIA2011
+IC2011
+EF2011A
+EF2011C
+EF2011D
+EAP2011
+F1011_F1A
+SFA1011
+GR2011
+GR200_11
+
+## ---------------------------
+## 2010
+## ---------------------------
+
+HD2010
+IC2010_AY
+EFIA2010
+IC2010
+EF2010A
+EF2010C
+EF2010D
+EAP2010
+F0910_F1A
+SFA0910
+GR2010
+GR200_10
+
+## ---------------------------
+## 2009
+## ---------------------------
+
+HD2009
+IC2009_AY
+EFIA2009
+IC2009
+EF2009A
+EF2009C
+EF2009D
+EAP2009
+F0809_F1A
+SFA0809
+GR2009
+GR200_09
+
+## ---------------------------
+## 2008
+## ---------------------------
+
+HD2008
+IC2008_AY
+EFIA2008
+IC2008
+EF2008A
+EF2008C
+EF2008D
+EAP2008
+F0708_F1A
+SFA0708
+GR2008
+GR200_08
+
+## ---------------------------
+## 2007
+## ---------------------------
+
+HD2007
+IC2007_AY
+EFIA2007
+IC2007
+EF2007A
+EF2007C
+EF2007D
+EAP2007
+F0607_F1A
+SFA0607
+GR2007
+
+## ---------------------------
+## 2006
+## ---------------------------
+
+HD2006
+IC2006_AY
+EFIA2006
+IC2006
+EF2006A
+EF2006C
+EF2006D
+EAP2006
+F0506_F1A
+SFA0506
+GR2006
+
+## ---------------------------
+## 2005
+## ---------------------------
+
+HD2005
+IC2005_AY
+EFIA2005
+IC2005
+EF2005A
+EF2005C
+EF2005D
+EAP2005
+F0405_F1A
+SFA0405
+GR2005
+
+## ---------------------------
+## 2004
+## ---------------------------
+
+HD2004
+IC2004_AY
+EFIA2004
+IC2004
+EF2004A
+EF2004C
+EF2004D
+EAP2004
+F0304_F1A
+SFA0304
+GR2004
