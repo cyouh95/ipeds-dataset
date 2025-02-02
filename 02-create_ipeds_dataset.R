@@ -1,6 +1,7 @@
 library(tidyverse)
 library(readxl)
 library(hablar)
+library(rvest)
 
 
 ipeds_dir <- 'ipeds'
@@ -394,6 +395,41 @@ load_data <- function(years, survey) {
     select(all_of(c('YEAR', ordered_vars)), ends_with('_SOURCE_FILE'))
 }
 
+
+# CPI
+
+cpi <- read_html('https://www.minneapolisfed.org/about-us/monetary-policy/inflation-calculator/consumer-price-index-1913-') %>%
+  html_element('table') %>%
+  html_table() %>% 
+  rename(
+    'YEAR' = 'Year',
+    'CPI' = 'Annual Average CPI(-U)'
+  ) %>% 
+  select(YEAR, CPI)
+
+cpi$LATEST_CPI <- cpi$CPI[[nrow(cpi)]]
+cpi$LATEST_CPI_YEAR <- cpi$YEAR[[nrow(cpi)]]
+cpi$CPI_CHANGE <- cpi$LATEST_CPI / cpi$CPI
+
+get_cpi_adjusted_data <- function(data_df) {
+  index_cols <- c('YEAR', 'UNITID')
+  
+  data_df <- data_df %>% 
+    left_join(cpi, by = 'YEAR') %>% 
+    mutate(
+      across(-c(all_of(index_cols), contains('CPI')), ~.x * CPI_CHANGE)
+    ) %>% 
+    select(-contains('CPI'))
+  
+  df_names <- names(data_df)
+  names(data_df) <- c(index_cols, str_c(df_names[!df_names %in% index_cols], '_ADJUSTED'))
+  
+  data_df
+}
+
+
+# Data tables
+
 # HD
 hd <- load_data(years, 'hd')
 hd <- hd %>% 
@@ -405,6 +441,10 @@ hd <- hd %>%
 
 # IC
 ic_ay <- load_data(years, 'ic_ay')
+ic_ay_adj <- get_cpi_adjusted_data(ic_ay %>% select(YEAR, UNITID, variables$ic_ay$n))
+ic_ay <- ic_ay %>% 
+  left_join(ic_ay_adj, by = c('YEAR', 'UNITID')) %>% 
+  relocate(IC_AY_SOURCE_FILE, .after = last_col())
 
 # EFIA
 efia <- load_data(years, 'efia')
@@ -464,9 +504,17 @@ eap <- load_data(years, 'eap') %>%
 
 # F
 f <- load_data(years, 'f')
+f_adj <- get_cpi_adjusted_data(f %>% select(YEAR, UNITID, variables$f$n))
+f <- f %>% 
+  left_join(f_adj, by = c('YEAR', 'UNITID')) %>% 
+  relocate(F_SOURCE_FILE, .after = last_col())
 
 # SFA
 sfa <- load_data(years, 'sfa')
+sfa_adj <- get_cpi_adjusted_data(sfa %>% select(YEAR, UNITID, grep('T$|A$|GIS4T|GIS4A', names(sfa), value = T)))
+sfa <- sfa %>% 
+  left_join(sfa_adj, by = c('YEAR', 'UNITID')) %>% 
+  relocate(SFA_SOURCE_FILE, .after = last_col())
 
 # GR
 gr <- load_data(years, 'gr') %>% 
@@ -508,6 +556,7 @@ names(hd_invariant) <- c('UNITID', str_c(hd_names[hd_names != 'UNITID'], '_INVAR
 
 ipeds <- hd %>% 
   left_join(hd_invariant, by = 'UNITID') %>% 
+  left_join(cpi, by = 'YEAR') %>% 
   left_join(ic_ay, by = c('YEAR', 'UNITID')) %>%
   left_join(efia, by = c('YEAR', 'UNITID')) %>% 
   left_join(adm, by = c('YEAR', 'UNITID')) %>%
@@ -541,7 +590,7 @@ opeid5 <- ipeds %>%
     ALL_SECTOR = str_c(unique(SECTOR), collapse = '|'),
     ALL_CCBASIC = str_c(unique(CCBASIC), collapse = '|'),
     ALL_CARNEGIE = str_c(unique(CARNEGIE), collapse = '|'),
-    across(UNITID:HD_SOURCE_FILE_INVARIANT, first),
+    across(UNITID:CPI_CHANGE, first),
     across(EFTEUG:FTEUG, sum_),
     EFIA_SOURCE_FILE = first(EFIA_SOURCE_FILE),
     across(EFTOTLT_29:EFASPIW_16, sum_),
@@ -550,9 +599,9 @@ opeid5 <- ipeds %>%
     EFC_SOURCE_FILE = first(EFC_SOURCE_FILE),
     across(EAPFTTYP_21000:EAPPTTYP_21000, sum_),
     EAP_SOURCE_FILE = first(EAP_SOURCE_FILE),
-    across(F1C011:F1C077, sum_),
+    across(F1C011:F1C077_ADJUSTED, sum_),
     F_SOURCE_FILE = first(F_SOURCE_FILE),
-    across(grep('T$|N$|GIS4N|GIS4T', variables$sfa$n, value = T), sum_),
+    across(grep('T$|N$|GIS4N|GIS4T|T_ADJUSTED', names(sfa), value = T), sum_),
     SFA_SOURCE_FILE = first(SFA_SOURCE_FILE),
     across(GRTOTLT_8:GRASPIW_33, sum_),
     GR_SOURCE_FILE = first(GR_SOURCE_FILE),
