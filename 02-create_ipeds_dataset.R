@@ -14,6 +14,7 @@ ipeds_dict_dir <- file.path(ipeds_dir, 'dictionary')
 # ---------------------------
 
 years <- 2021:2004
+year_invariant <- 2009
 
 variables <- list(
   'hd' = list(
@@ -496,7 +497,17 @@ gr200 <- load_data(years, 'gr200')
 # Merge and save YEAR-UNITID-level data
 # --------------------------------------
 
+hd_invariant <- hd %>%
+  filter(YEAR >= year_invariant) %>% 
+  arrange(YEAR) %>% 
+  group_by(UNITID) %>% 
+  summarise_all(first)
+
+hd_names <- names(hd_invariant)
+names(hd_invariant) <- c('UNITID', str_c(hd_names[hd_names != 'UNITID'], '_INVARIANT'))
+
 ipeds <- hd %>% 
+  left_join(hd_invariant, by = 'UNITID') %>% 
   left_join(ic_ay, by = c('YEAR', 'UNITID')) %>%
   left_join(efia, by = c('YEAR', 'UNITID')) %>% 
   left_join(adm, by = c('YEAR', 'UNITID')) %>%
@@ -530,7 +541,7 @@ opeid5 <- ipeds %>%
     ALL_SECTOR = str_c(unique(SECTOR), collapse = '|'),
     ALL_CCBASIC = str_c(unique(CCBASIC), collapse = '|'),
     ALL_CARNEGIE = str_c(unique(CARNEGIE), collapse = '|'),
-    across(UNITID:HD_SOURCE_FILE, first),
+    across(UNITID:HD_SOURCE_FILE_INVARIANT, first),
     across(EFTEUG:FTEUG, sum_),
     EFIA_SOURCE_FILE = first(EFIA_SOURCE_FILE),
     across(EFTOTLT_29:EFASPIW_16, sum_),

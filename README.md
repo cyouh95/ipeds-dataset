@@ -15,6 +15,8 @@ Update the following objects as needed in **02-create_ipeds_dataset.R**:
 
 - `ipeds_dir`: Set to the same directory specified by `out_dir` in **downloadipeds.R** above
 - `years`: Set to range of years desired in dataset
+- `year_invariant`: Set to year to pull time-invariant variables from (HD variables only)
+  - _This will pull data from `year_invariant` if available, otherwise the next closest year up_
 
 Run **02-create_ipeds_dataset.R**, which will create the following outputs:
 
