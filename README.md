@@ -21,6 +21,7 @@ Update the following objects as needed in **02-create_ipeds_dataset.R**:
 Run **02-create_ipeds_dataset.R**, which will create the following outputs:
 
 - **label_vars.csv**: Variable name labels over the years
+  - _Labels for 2009 HD variables are currently not included since its data dictionary is not in a readily parseable Excel format_
 - **label_vals.csv**: Variable value labels over the years
 - **ipeds.csv**: YEAR-UNITID-level dataset
 - **opeid5.csv**: YEAR-OPEID5-level dataset
