@@ -581,9 +581,19 @@ write_csv(ipeds, file = 'ipeds.csv')
 # Collapse and save YEAR-OPEID5-level data
 # -----------------------------------------
 
+hd_invariant_opeid5 <- hd %>%
+  filter(YEAR >= year_invariant) %>% 
+  arrange(YEAR, OPEID5, OPEIDSUF, OPEFLAG, UNITID) %>% 
+  group_by(OPEID5) %>% 
+  summarise_all(first)
+
+hd_names <- names(hd_invariant_opeid5)
+names(hd_invariant_opeid5) <- c('OPEID5', str_c(hd_names[hd_names != 'OPEID5'], '_INVARIANT'))
+
 opeid5 <- ipeds %>%
+  select(-contains('_INVARIANT')) %>% 
   filter(!is.na(OPEID5)) %>%
-  arrange(YEAR, OPEID5, OPEIDSUF, OPEFLAG) %>%
+  arrange(YEAR, OPEID5, OPEIDSUF, OPEFLAG, UNITID) %>%
   group_by(YEAR, OPEID5) %>%
   summarise(
     NUM_INST = n(),
@@ -611,6 +621,7 @@ opeid5 <- ipeds %>%
     GR200_SOURCE_FILE = first(GR200_SOURCE_FILE),
     .groups = 'drop'
   ) %>% 
+  left_join(hd_invariant_opeid5, by = 'OPEID5') %>% 
   mutate(
     COMPUTED_STUFACR = if_else(
       (EFTOTLT_8 == 0 & EFTOTLT_22 == 0 ) | (EAPFTTYP_21000 == 0 & EAPPTTYP_21000 == 0),
